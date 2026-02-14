@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "sql-tool"
+name = "tsdb-tool"
 version = "0.1.0"
 description = "PostgreSQL query and administration CLI tool"
 readme = "README.md"
