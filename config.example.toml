@@ -1,0 +1,29 @@
+# sql-tool Configuration File
+#
+# Location: ~/.config/sql-tool/config.toml
+#
+# Copy this file to the location above and customize for your environment.
+# All settings are optional - defaults are used when not specified.
+
+# Global defaults
+default_timeout = 30 # Query timeout in seconds
+default_format = "table" # Output format: table, json, csv
+default_profile = "local" # Default profile to use when -P not specified
+
+# Style 1: Individual fields
+[profiles.local]
+host = "localhost"
+port = 5432
+dbname = "postgres"
+user = "postgres"
+default_schema = "public"
+
+# Style 2: Connection URL (parsed into individual fields on load)
+[profiles.production]
+dsn = "postgresql://readonly@prod-db.example.com:5432/myapp?sslmode=verify-full"
+
+# Style 3: DSN with overrides (DSN parsed first, then individual fields override)
+[profiles.staging]
+dsn = "postgresql://deployer@staging-db.example.com/myapp"
+sslmode = "verify-full"
+connect_timeout = 5
