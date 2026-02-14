@@ -2,7 +2,7 @@
 
 import pytest
 
-from sql_tool.core.logging import get_logger, setup_logging
+from tsdb_tool.core.logging import get_logger, setup_logging
 
 
 @pytest.mark.unit

@@ -1,4 +1,4 @@
-# Contributing to sql-tool
+# Contributing to tsdb-tool
 
 ## Development Setup
 
@@ -12,14 +12,14 @@
 ### Install Dependencies
 
 ```bash
-git clone https://github.com/vladistan/sql-tool.git
-cd sql-tool
+git clone https://github.com/vladistan/tsdb-tool.git
+cd tsdb-tool
 uv sync --all-extras
 ```
 
 ### Configure a Test Database Profile
 
-Integration tests require a running PostgreSQL instance. Create a config file at `~/.config/sql-tool/config.toml`:
+Integration tests require a running PostgreSQL instance. Create a config file at `~/.config/tsdb-tool/config.toml`:
 
 ```toml
 [profiles.test_db]
@@ -102,7 +102,7 @@ uv run pre-commit run --all-files
 ## Project Structure
 
 ```
-src/sql_tool/
+src/tsdb_tool/
 ├── cli/           # CLI commands (typer)
 │   ├── commands/  # Subcommand groups (pg, ts, query)
 │   ├── helpers.py # CLI utilities

@@ -11,7 +11,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from sql_tool.core.exceptions import InputError
+from tsdb_tool.core.exceptions import InputError
 
 
 def resolve_query_source(

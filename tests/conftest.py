@@ -6,7 +6,7 @@ from tempfile import TemporaryDirectory
 import pytest
 from typer.testing import CliRunner
 
-from sql_tool.cli.main import app
+from tsdb_tool.cli.main import app
 
 
 @pytest.fixture

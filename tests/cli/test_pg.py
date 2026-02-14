@@ -4,7 +4,6 @@ import json
 
 import pytest
 
-from sql_tool.cli.helpers import fmt_size as _fmt_size
 from tests.integration_config import (
     PROFILE_ARGS,
     TEST_DATABASE,
@@ -12,6 +11,7 @@ from tests.integration_config import (
     TEST_SCHEMA,
     TEST_TABLE_REF,
 )
+from tsdb_tool.cli.helpers import fmt_size as _fmt_size
 
 # -- _fmt_size unit tests --
 

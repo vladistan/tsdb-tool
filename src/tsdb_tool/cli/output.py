@@ -7,7 +7,7 @@ from enum import StrEnum
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from sql_tool.formatters.base import Formatter
+    from tsdb_tool.formatters.base import Formatter
 
 
 class OutputFormat(StrEnum):
@@ -40,10 +40,10 @@ def get_formatter(
 ) -> Formatter:
     """Build and return the appropriate formatter instance."""
     # Import here to trigger registry population from formatter modules.
-    import sql_tool.formatters.csv  # noqa: F401
-    import sql_tool.formatters.json  # noqa: F401
-    import sql_tool.formatters.table  # noqa: F401
-    from sql_tool.formatters.base import registry
+    import tsdb_tool.formatters.csv  # noqa: F401
+    import tsdb_tool.formatters.json  # noqa: F401
+    import tsdb_tool.formatters.table  # noqa: F401
+    from tsdb_tool.formatters.base import registry
 
     fmt_name = resolve_format(format_flag)
 

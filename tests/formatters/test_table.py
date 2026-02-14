@@ -2,9 +2,9 @@
 
 import pytest
 
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.formatters.base import Formatter
-from sql_tool.formatters.table import TableFormatter
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.formatters.base import Formatter
+from tsdb_tool.formatters.table import TableFormatter
 
 
 def _make_result(rows=None, columns=None):

@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol, runtime_checkable
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sql_tool.core.models import QueryResult
+    from tsdb_tool.core.models import QueryResult
 
 
 @runtime_checkable

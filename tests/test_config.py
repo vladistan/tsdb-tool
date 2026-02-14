@@ -2,8 +2,8 @@
 
 import pytest
 
-from sql_tool.cli.main import app
-from sql_tool.core.config import (
+from tsdb_tool.cli.main import app
+from tsdb_tool.core.config import (
     AppConfig,
     PgProfile,
     ResolvedConfig,
@@ -11,7 +11,7 @@ from sql_tool.core.config import (
     parse_dsn,
     resolve_config,
 )
-from sql_tool.core.exceptions import ConfigError
+from tsdb_tool.core.exceptions import ConfigError
 
 # ---------------------------------------------------------------------------
 # Step 2.1: Configuration Models
@@ -66,7 +66,7 @@ class TestPgProfile:
         assert profile.password is None
         assert profile.sslmode == "prefer"
         assert profile.connect_timeout == 10
-        assert profile.application_name == "sql-tool"
+        assert profile.application_name == "tsdb-tool"
 
     def test_from_individual_fields(self):
         profile = PgProfile(host="dbhost", port=5433, dbname="mydb", user="admin")

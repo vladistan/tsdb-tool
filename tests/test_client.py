@@ -5,11 +5,11 @@ Integration tests against real PostgreSQL using test_db profile.
 
 import pytest
 
-from sql_tool.core.client import PgClient
-from sql_tool.core.config import load_config, resolve_config
-from sql_tool.core.exceptions import NetworkError, SqlToolError, TimeoutError
-from sql_tool.core.models import ColumnMeta, QueryResult
 from tests.integration_config import TEST_PROFILE
+from tsdb_tool.core.client import PgClient
+from tsdb_tool.core.config import load_config, resolve_config
+from tsdb_tool.core.exceptions import NetworkError, SqlToolError, TimeoutError
+from tsdb_tool.core.models import ColumnMeta, QueryResult
 
 
 @pytest.fixture
@@ -105,7 +105,7 @@ def test_column_meta_bool(client):
 
 
 @pytest.mark.integration
-def test_syntax_error_raises_sql_tool_error(client):
+def test_syntax_error_raises_tsdb_tool_error(client):
     with pytest.raises(SqlToolError, match="SQL error"):
         client.execute_query("SELECTT 1")
 
@@ -122,7 +122,7 @@ def test_timeout_raises_timeout_error(resolved_config):
 
 @pytest.mark.integration
 def test_connection_failure_raises_network_error():
-    from sql_tool.core.config import ResolvedConfig
+    from tsdb_tool.core.config import ResolvedConfig
 
     bad_config = ResolvedConfig(host="192.0.2.1", port=9999, connect_timeout=1)
     client = PgClient(bad_config)

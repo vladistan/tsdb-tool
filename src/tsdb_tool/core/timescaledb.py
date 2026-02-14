@@ -8,11 +8,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from sql_tool.core.exceptions import SqlToolError
+from tsdb_tool.core.exceptions import SqlToolError
 
 if TYPE_CHECKING:
-    from sql_tool.core.client import PgClient
-    from sql_tool.core.models import QueryResult
+    from tsdb_tool.core.client import PgClient
+    from tsdb_tool.core.models import QueryResult
 
 
 def check_timescaledb_available(client: PgClient) -> None:

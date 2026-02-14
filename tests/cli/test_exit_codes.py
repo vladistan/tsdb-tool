@@ -4,20 +4,20 @@ from unittest.mock import patch
 
 import pytest
 
-from sql_tool.core.exceptions import (
+from tsdb_tool.core.exceptions import (
     ConfigError,
     InputError,
     NetworkError,
     SqlToolError,
     TimeoutError,
 )
-from sql_tool.core.exit_codes import ExitCode
+from tsdb_tool.core.exit_codes import ExitCode
 
 # -- Exception exit_code attributes --
 
 
 @pytest.mark.unit
-def test_sql_tool_error_general():
+def test_tsdb_tool_error_general():
     e = SqlToolError("something failed")
     assert e.exit_code == ExitCode.GENERAL_ERROR
 
@@ -51,9 +51,9 @@ def test_config_error_code():
 
 @pytest.mark.unit
 def test_run_network_error_maps_to_exit_code():
-    with patch("sql_tool.cli.main.app", side_effect=NetworkError("fail")):
+    with patch("tsdb_tool.cli.main.app", side_effect=NetworkError("fail")):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == ExitCode.NETWORK_ERROR
@@ -61,9 +61,9 @@ def test_run_network_error_maps_to_exit_code():
 
 @pytest.mark.unit
 def test_run_input_error_maps_to_exit_code():
-    with patch("sql_tool.cli.main.app", side_effect=InputError("bad input")):
+    with patch("tsdb_tool.cli.main.app", side_effect=InputError("bad input")):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == ExitCode.INPUT_ERROR
@@ -71,9 +71,9 @@ def test_run_input_error_maps_to_exit_code():
 
 @pytest.mark.unit
 def test_run_config_error_maps_to_exit_code():
-    with patch("sql_tool.cli.main.app", side_effect=ConfigError("bad config")):
+    with patch("tsdb_tool.cli.main.app", side_effect=ConfigError("bad config")):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == ExitCode.CONFIG_ERROR
@@ -81,9 +81,9 @@ def test_run_config_error_maps_to_exit_code():
 
 @pytest.mark.unit
 def test_run_timeout_error_maps_to_exit_code():
-    with patch("sql_tool.cli.main.app", side_effect=TimeoutError("timed out")):
+    with patch("tsdb_tool.cli.main.app", side_effect=TimeoutError("timed out")):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == ExitCode.TIMEOUT
@@ -91,9 +91,9 @@ def test_run_timeout_error_maps_to_exit_code():
 
 @pytest.mark.unit
 def test_run_keyboard_interrupt_maps_to_130():
-    with patch("sql_tool.cli.main.app", side_effect=KeyboardInterrupt):
+    with patch("tsdb_tool.cli.main.app", side_effect=KeyboardInterrupt):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == 130
@@ -101,9 +101,9 @@ def test_run_keyboard_interrupt_maps_to_130():
 
 @pytest.mark.unit
 def test_run_unexpected_exception_maps_to_1():
-    with patch("sql_tool.cli.main.app", side_effect=RuntimeError("boom")):
+    with patch("tsdb_tool.cli.main.app", side_effect=RuntimeError("boom")):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == 1
@@ -111,9 +111,9 @@ def test_run_unexpected_exception_maps_to_1():
 
 @pytest.mark.unit
 def test_run_system_exit_passes_through():
-    with patch("sql_tool.cli.main.app", side_effect=SystemExit(42)):
+    with patch("tsdb_tool.cli.main.app", side_effect=SystemExit(42)):
         with pytest.raises(SystemExit) as exc_info:
-            from sql_tool.cli.main import run
+            from tsdb_tool.cli.main import run
 
             run()
         assert exc_info.value.code == 42

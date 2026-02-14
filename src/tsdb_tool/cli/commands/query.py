@@ -5,8 +5,8 @@ from typing import Annotated
 import structlog
 import typer
 
-from sql_tool.cli.commands._shared import get_client, output_result
-from sql_tool.core.query_source import resolve_query_source
+from tsdb_tool.cli.commands._shared import get_client, output_result
+from tsdb_tool.core.query_source import resolve_query_source
 
 log = structlog.get_logger()
 

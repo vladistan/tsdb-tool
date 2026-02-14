@@ -2,7 +2,7 @@
 
 import pytest
 
-from sql_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.core.models import ColumnMeta, QueryResult
 
 
 @pytest.mark.unit

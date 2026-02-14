@@ -2,10 +2,11 @@
 
 import pytest
 
-from sql_tool.core.client import PgClient
-from sql_tool.core.config import load_config, resolve_config
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.core.timescaledb import (
+from tests.integration_config import TEST_PROFILE, TEST_SCHEMA, TEST_TABLE
+from tsdb_tool.core.client import PgClient
+from tsdb_tool.core.config import load_config, resolve_config
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.core.timescaledb import (
     compression_stats,
     count_compressed_chunks,
     list_chunk_info,
@@ -20,7 +21,6 @@ from sql_tool.core.timescaledb import (
     list_retention_policies,
     parse_chunk_id,
 )
-from tests.integration_config import TEST_PROFILE, TEST_SCHEMA, TEST_TABLE
 
 
 def _make_result(rows, columns=None, status_message="SELECT 1"):

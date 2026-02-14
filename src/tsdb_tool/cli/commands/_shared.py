@@ -9,16 +9,16 @@ from __future__ import annotations
 import sys
 from typing import TYPE_CHECKING, Any
 
-from sql_tool.cli.helpers import fmt_size
-from sql_tool.cli.output import get_formatter, resolve_format, write_output
-from sql_tool.core.client import PgClient
-from sql_tool.core.config import load_config, resolve_config
+from tsdb_tool.cli.helpers import fmt_size
+from tsdb_tool.cli.output import get_formatter, resolve_format, write_output
+from tsdb_tool.core.client import PgClient
+from tsdb_tool.core.config import load_config, resolve_config
 
 if TYPE_CHECKING:
     import typer
 
-    from sql_tool.cli.output import OutputFormat
-    from sql_tool.core.models import QueryResult
+    from tsdb_tool.cli.output import OutputFormat
+    from tsdb_tool.core.models import QueryResult
 
 
 def get_client(ctx: typer.Context, timeout: float | None = None) -> PgClient:

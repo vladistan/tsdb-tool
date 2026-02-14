@@ -11,8 +11,8 @@ from io import StringIO
 
 import pytest
 
-from sql_tool.cli.main import app
 from tests.integration_config import PROFILE_ARGS
+from tsdb_tool.cli.main import app
 
 # -- helpers --
 

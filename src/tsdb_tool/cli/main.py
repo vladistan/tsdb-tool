@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Annotated, Any
 import sentry_sdk
 import typer
 
-from sql_tool.__about__ import __version__
-from sql_tool.cli.commands._shared import (
+from tsdb_tool.__about__ import __version__
+from tsdb_tool.cli.commands._shared import (
     apply_local_format_options,
     get_client,
     output_result,
@@ -18,17 +18,17 @@ from sql_tool.cli.commands._shared import (
     preprocess_optional_int_flags,
     size_formatter,
 )
-from sql_tool.cli.commands.config import config_app
-from sql_tool.cli.commands.query import query_command
-from sql_tool.cli.commands.service import service_app
-from sql_tool.cli.commands.ts import ts_app
-from sql_tool.cli.helpers import format_duration_human, format_relative_time
-from sql_tool.cli.output import OutputFormat  # noqa: TC001
-from sql_tool.core.exceptions import SqlToolError
-from sql_tool.core.logging import setup_logging
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.core.monitoring import setup_sentry
-from sql_tool.core.postgres import (
+from tsdb_tool.cli.commands.config import config_app
+from tsdb_tool.cli.commands.query import query_command
+from tsdb_tool.cli.commands.service import service_app
+from tsdb_tool.cli.commands.ts import ts_app
+from tsdb_tool.cli.helpers import format_duration_human, format_relative_time
+from tsdb_tool.cli.output import OutputFormat  # noqa: TC001
+from tsdb_tool.core.exceptions import SqlToolError
+from tsdb_tool.core.logging import setup_logging
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.core.monitoring import setup_sentry
+from tsdb_tool.core.postgres import (
     connections_summary,
     describe_table,
     get_time_column,
@@ -43,7 +43,7 @@ from sql_tool.core.postgres import (
 )
 
 if TYPE_CHECKING:
-    from sql_tool.core.client import PgClient
+    from tsdb_tool.core.client import PgClient
 
 
 class SentryTestError(RuntimeError):
@@ -63,7 +63,7 @@ app.command("query")(query_command)
 
 def version_callback(value: bool) -> None:
     if value:
-        typer.echo(f"sql-tool {__version__}")
+        typer.echo(f"tsdb-tool {__version__}")
         raise typer.Exit()
 
 
@@ -146,7 +146,7 @@ def main(
     setup_sentry()
 
     transaction = sentry_sdk.start_transaction(
-        op="cli", name=ctx.invoked_subcommand or "sql-tool"
+        op="cli", name=ctx.invoked_subcommand or "tsdb-tool"
     )
     transaction.__enter__()
 
@@ -200,7 +200,7 @@ def test_sentry() -> None:
     """Send test events to Sentry for validation."""
     typer.echo("Sending test error to Sentry...")
     try:
-        raise SentryTestError("sql-tool Phase 1 Sentry test error")
+        raise SentryTestError("tsdb-tool Phase 1 Sentry test error")
     except Exception as e:
         sentry_sdk.capture_exception(e)
 
@@ -215,7 +215,7 @@ def test_sentry() -> None:
 
     sentry_sdk.flush(timeout=5)
     typer.echo("Test events sent. Check Sentry console:")
-    typer.echo("  - Issues: Verify 'sql-tool Phase 1 Sentry test error' appears")
+    typer.echo("  - Issues: Verify 'tsdb-tool Phase 1 Sentry test error' appears")
     typer.echo("  - Performance: Verify 'test_sentry' transaction appears")
 
 

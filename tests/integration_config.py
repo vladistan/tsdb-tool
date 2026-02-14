@@ -13,7 +13,7 @@ Example:
 
 import os
 
-# Profile name configured in ~/.config/sql-tool/config.toml
+# Profile name configured in ~/.config/tsdb-tool/config.toml
 TEST_PROFILE = os.environ.get("SQL_TOOL_TEST_PROFILE", "test_db")
 
 # Schema containing the hypertable used for integration tests

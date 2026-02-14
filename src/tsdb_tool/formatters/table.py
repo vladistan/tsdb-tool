@@ -9,12 +9,12 @@ from typing import TYPE_CHECKING
 from rich.console import Console
 from rich.table import Table
 
-from sql_tool.formatters.base import registry
+from tsdb_tool.formatters.base import registry
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sql_tool.core.models import QueryResult
+    from tsdb_tool.core.models import QueryResult
 
 _NO_RESULTS = "No results"
 

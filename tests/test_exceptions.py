@@ -2,14 +2,14 @@
 
 import pytest
 
-from sql_tool.core.exceptions import (
+from tsdb_tool.core.exceptions import (
     ConfigError,
     InputError,
     NetworkError,
     SqlToolError,
     TimeoutError,
 )
-from sql_tool.core.exit_codes import ExitCode
+from tsdb_tool.core.exit_codes import ExitCode
 
 
 @pytest.mark.unit

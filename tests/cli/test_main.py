@@ -5,9 +5,9 @@ import sys
 
 import pytest
 
-from sql_tool.cli.commands._shared import preprocess_optional_int_flags
-from sql_tool.cli.main import app
 from tests.integration_config import PROFILE_ARGS
+from tsdb_tool.cli.commands._shared import preprocess_optional_int_flags
+from tsdb_tool.cli.main import app
 
 
 @pytest.mark.unit
@@ -29,12 +29,12 @@ class TestCliVersion:
     def test_version_flag(self, runner):
         result = runner.invoke(app, ["--version"])
         assert result.exit_code == 0
-        assert "sql-tool 0.1.0" in result.stdout
+        assert "tsdb-tool 0.1.0" in result.stdout
 
     def test_version_short_flag(self, runner):
         result = runner.invoke(app, ["-V"])
         assert result.exit_code == 0
-        assert "sql-tool 0.1.0" in result.stdout
+        assert "tsdb-tool 0.1.0" in result.stdout
 
 
 @pytest.mark.unit
@@ -65,48 +65,48 @@ class TestTestSentryCommand:
 
 
 def test_preprocess_inserts_default_for_bare_head(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["sql-tool", "table", "foo", "--head"])
+    monkeypatch.setattr("sys.argv", ["tsdb-tool", "table", "foo", "--head"])
     preprocess_optional_int_flags()
-    assert sys.argv == ["sql-tool", "table", "foo", "--head", "10"]
+    assert sys.argv == ["tsdb-tool", "table", "foo", "--head", "10"]
 
 
 def test_preprocess_keeps_explicit_head_value(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["sql-tool", "table", "foo", "--head", "5"])
+    monkeypatch.setattr("sys.argv", ["tsdb-tool", "table", "foo", "--head", "5"])
     preprocess_optional_int_flags()
-    assert sys.argv == ["sql-tool", "table", "foo", "--head", "5"]
+    assert sys.argv == ["tsdb-tool", "table", "foo", "--head", "5"]
 
 
 def test_preprocess_inserts_default_for_bare_tail(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["sql-tool", "table", "foo", "--tail"])
+    monkeypatch.setattr("sys.argv", ["tsdb-tool", "table", "foo", "--tail"])
     preprocess_optional_int_flags()
-    assert sys.argv == ["sql-tool", "table", "foo", "--tail", "10"]
+    assert sys.argv == ["tsdb-tool", "table", "foo", "--tail", "10"]
 
 
 def test_preprocess_inserts_default_for_bare_sample(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["sql-tool", "table", "foo", "--sample"])
+    monkeypatch.setattr("sys.argv", ["tsdb-tool", "table", "foo", "--sample"])
     preprocess_optional_int_flags()
-    assert sys.argv == ["sql-tool", "table", "foo", "--sample", "10"]
+    assert sys.argv == ["tsdb-tool", "table", "foo", "--sample", "10"]
 
 
 def test_preprocess_skips_when_no_table_in_argv(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["sql-tool", "databases", "--head"])
+    monkeypatch.setattr("sys.argv", ["tsdb-tool", "databases", "--head"])
     preprocess_optional_int_flags()
-    assert sys.argv == ["sql-tool", "databases", "--head"]
+    assert sys.argv == ["tsdb-tool", "databases", "--head"]
 
 
 def test_preprocess_handles_multiple_bare_flags(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["sql-tool", "table", "foo", "--head", "--tail"])
+    monkeypatch.setattr("sys.argv", ["tsdb-tool", "table", "foo", "--head", "--tail"])
     preprocess_optional_int_flags()
-    assert sys.argv == ["sql-tool", "table", "foo", "--head", "10", "--tail", "10"]
+    assert sys.argv == ["tsdb-tool", "table", "foo", "--head", "10", "--tail", "10"]
 
 
 def test_preprocess_inserts_default_when_followed_by_flag(monkeypatch):
     monkeypatch.setattr(
-        "sys.argv", ["sql-tool", "table", "foo", "--head", "--format", "json"]
+        "sys.argv", ["tsdb-tool", "table", "foo", "--head", "--format", "json"]
     )
     preprocess_optional_int_flags()
     assert sys.argv == [
-        "sql-tool",
+        "tsdb-tool",
         "table",
         "foo",
         "--head",

@@ -5,7 +5,7 @@ Sentry is initialized early in main() after logging setup.
 
 import sentry_sdk
 
-from sql_tool.__about__ import __version__
+from tsdb_tool.__about__ import __version__
 
 _SENTRY_DSN = "https://36ad37dfb52a69bccdd8cf8d8940c747@o4508594232426496.ingest.us.sentry.io/4510874339966977"
 

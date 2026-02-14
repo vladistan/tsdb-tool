@@ -2,10 +2,10 @@
 
 import pytest
 
-from sql_tool.cli.output import OutputFormat, get_formatter, resolve_format
-from sql_tool.formatters.csv import CSVFormatter
-from sql_tool.formatters.json import JSONFormatter
-from sql_tool.formatters.table import TableFormatter
+from tsdb_tool.cli.output import OutputFormat, get_formatter, resolve_format
+from tsdb_tool.formatters.csv import CSVFormatter
+from tsdb_tool.formatters.json import JSONFormatter
+from tsdb_tool.formatters.table import TableFormatter
 
 
 @pytest.mark.unit
@@ -32,19 +32,19 @@ def test_resolve_format_explicit_csv():
 
 @pytest.mark.unit
 def test_resolve_format_tty_defaults_to_table(monkeypatch):
-    monkeypatch.setattr("sql_tool.cli.output.detect_tty", lambda: True)
+    monkeypatch.setattr("tsdb_tool.cli.output.detect_tty", lambda: True)
     assert resolve_format(None) == "table"
 
 
 @pytest.mark.unit
 def test_resolve_format_non_tty_defaults_to_csv(monkeypatch):
-    monkeypatch.setattr("sql_tool.cli.output.detect_tty", lambda: False)
+    monkeypatch.setattr("tsdb_tool.cli.output.detect_tty", lambda: False)
     assert resolve_format(None) == "csv"
 
 
 @pytest.mark.unit
 def test_resolve_format_explicit_overrides_tty(monkeypatch):
-    monkeypatch.setattr("sql_tool.cli.output.detect_tty", lambda: True)
+    monkeypatch.setattr("tsdb_tool.cli.output.detect_tty", lambda: True)
     assert resolve_format("json") == "json"
 
 

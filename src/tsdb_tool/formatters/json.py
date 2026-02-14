@@ -5,12 +5,12 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, Any
 
-from sql_tool.formatters.base import registry
+from tsdb_tool.formatters.base import registry
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sql_tool.core.models import QueryResult
+    from tsdb_tool.core.models import QueryResult
 
 
 def _serialize_value(val: Any) -> Any:

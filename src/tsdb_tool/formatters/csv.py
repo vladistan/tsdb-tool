@@ -6,12 +6,12 @@ import csv
 from io import StringIO
 from typing import TYPE_CHECKING
 
-from sql_tool.formatters.base import registry
+from tsdb_tool.formatters.base import registry
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sql_tool.core.models import QueryResult
+    from tsdb_tool.core.models import QueryResult
 
 
 def _write_row(values: list[str]) -> str:

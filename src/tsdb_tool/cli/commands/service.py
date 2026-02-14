@@ -10,8 +10,8 @@ from typing import Annotated
 
 import typer
 
-from sql_tool.cli.commands._shared import get_client, output_result
-from sql_tool.core.postgres import (
+from tsdb_tool.cli.commands._shared import get_client, output_result
+from tsdb_tool.core.postgres import (
     check_server,
     kill_backend,
     list_user_tables,

@@ -12,11 +12,11 @@ import psycopg
 import psycopg.errors
 import structlog
 
-from sql_tool.core.exceptions import NetworkError, SqlToolError, TimeoutError
-from sql_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.core.exceptions import NetworkError, SqlToolError, TimeoutError
+from tsdb_tool.core.models import ColumnMeta, QueryResult
 
 if TYPE_CHECKING:
-    from sql_tool.core.config import ResolvedConfig
+    from tsdb_tool.core.config import ResolvedConfig
 
 log = structlog.get_logger()
 

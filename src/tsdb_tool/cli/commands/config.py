@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING
 
 import typer
 
-from sql_tool.core.config import DEFAULT_CONFIG_PATH, load_config, resolve_config
+from tsdb_tool.core.config import DEFAULT_CONFIG_PATH, load_config, resolve_config
 
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from sql_tool.core.config import ResolvedConfig
+    from tsdb_tool.core.config import ResolvedConfig
 
 config_app = typer.Typer(help="Configuration management commands")
 

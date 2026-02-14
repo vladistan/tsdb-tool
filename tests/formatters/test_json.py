@@ -6,9 +6,9 @@ from decimal import Decimal
 
 import pytest
 
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.formatters.base import Formatter
-from sql_tool.formatters.json import JSONFormatter
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.formatters.base import Formatter
+from tsdb_tool.formatters.json import JSONFormatter
 
 
 def _make_result(rows=None, columns=None):

@@ -1,6 +1,6 @@
-# sql-tool Configuration File
+# tsdb-tool Configuration File
 #
-# Location: ~/.config/sql-tool/config.toml
+# Location: ~/.config/tsdb-tool/config.toml
 #
 # Copy this file to the location above and customize for your environment.
 # All settings are optional - defaults are used when not specified.

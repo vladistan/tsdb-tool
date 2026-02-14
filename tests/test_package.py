@@ -6,15 +6,15 @@ import pytest
 @pytest.mark.unit
 def test_package_imports():
     """Package imports without errors."""
-    import sql_tool
+    import tsdb_tool
 
-    assert sql_tool is not None
+    assert tsdb_tool is not None
 
 
 @pytest.mark.unit
 def test_version_accessible():
     """Version is accessible from package."""
-    from sql_tool import __version__
+    from tsdb_tool import __version__
 
     assert __version__ is not None
     assert isinstance(__version__, str)
@@ -24,7 +24,7 @@ def test_version_accessible():
 @pytest.mark.unit
 def test_version_format():
     """Version follows semver format."""
-    from sql_tool import __version__
+    from tsdb_tool import __version__
 
     parts = __version__.split(".")
     assert len(parts) == 3
@@ -35,6 +35,6 @@ def test_version_format():
 @pytest.mark.unit
 def test_version_value():
     """Version matches expected initial value."""
-    from sql_tool import __version__
+    from tsdb_tool import __version__
 
     assert __version__ == "0.1.0"

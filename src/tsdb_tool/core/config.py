@@ -22,9 +22,9 @@ from urllib.parse import parse_qs, urlparse
 
 from pydantic import BaseModel, computed_field, field_validator, model_validator
 
-from sql_tool.core.exceptions import ConfigError
+from tsdb_tool.core.exceptions import ConfigError
 
-DEFAULT_CONFIG_PATH = Path.home() / ".config" / "sql-tool" / "config.toml"
+DEFAULT_CONFIG_PATH = Path.home() / ".config" / "tsdb-tool" / "config.toml"
 
 _PG_ENV_VARS: dict[str, str] = {
     "PGHOST": "host",
@@ -42,7 +42,7 @@ _PROFILE_DEFAULTS: dict[str, Any] = {
     "password": None,
     "sslmode": "prefer",
     "connect_timeout": 10,
-    "application_name": "sql-tool",
+    "application_name": "tsdb-tool",
 }
 
 
@@ -83,7 +83,7 @@ class PgProfile(BaseModel):
     password: str | None = None
     sslmode: str = "prefer"
     connect_timeout: int = 10
-    application_name: str = "sql-tool"
+    application_name: str = "tsdb-tool"
     default_schema: str | None = None
 
     @model_validator(mode="before")
@@ -150,7 +150,7 @@ class ResolvedConfig(BaseModel):
     password: str | None = None
     sslmode: str = "prefer"
     connect_timeout: int = 10
-    application_name: str = "sql-tool"
+    application_name: str = "tsdb-tool"
     default_timeout: float = 30.0
     default_format: str = "table"
     default_schema: str | None = None

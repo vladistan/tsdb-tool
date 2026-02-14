@@ -3,10 +3,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from sql_tool.core.models import ColumnMeta, QueryResult
 from tests.integration_config import PROFILE_ARGS, TEST_TABLE, TEST_TABLE_REF
+from tsdb_tool.core.models import ColumnMeta, QueryResult
 
-_TS = "sql_tool.cli.commands.ts"
+_TS = "tsdb_tool.cli.commands.ts"
 
 
 @pytest.fixture

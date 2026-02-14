@@ -4,7 +4,7 @@ All exceptions carry an exit_code for CLI return value mapping.
 Exit codes are defined in exit_codes.py and follow CODE-PY-CLI-001 pattern.
 """
 
-from sql_tool.core.exit_codes import ExitCode
+from tsdb_tool.core.exit_codes import ExitCode
 
 
 class SqlToolError(Exception):

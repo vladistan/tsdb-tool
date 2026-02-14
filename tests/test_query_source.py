@@ -6,8 +6,8 @@ from unittest.mock import patch
 
 import pytest
 
-from sql_tool.core.exceptions import InputError
-from sql_tool.core.query_source import resolve_query_source
+from tsdb_tool.core.exceptions import InputError
+from tsdb_tool.core.query_source import resolve_query_source
 
 FIXTURE_SQL = str(Path(__file__).parent / "fixtures" / "select_42.sql")
 

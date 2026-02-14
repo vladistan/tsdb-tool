@@ -10,23 +10,23 @@ from typing import Annotated, Any
 
 import typer
 
-from sql_tool.cli.commands._shared import (
+from tsdb_tool.cli.commands._shared import (
     apply_local_format_options,
     get_client,
     is_table_format,
     output_result,
     parse_table_arg,
 )
-from sql_tool.cli.helpers import (
+from tsdb_tool.cli.helpers import (
     format_relative_time,
     format_size_compact,
     format_size_gb,
     format_timestamp,
     normalize_pg_interval,
 )
-from sql_tool.cli.output import OutputFormat
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.core.timescaledb import (
+from tsdb_tool.cli.output import OutputFormat
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.core.timescaledb import (
     add_compression_policy,
     alter_compression_settings,
     check_timescaledb_available,

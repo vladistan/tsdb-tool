@@ -34,9 +34,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/vladistan/sql-tool"
-Repository = "https://github.com/vladistan/sql-tool"
-Issues = "https://github.com/vladistan/sql-tool/issues"
+Homepage = "https://github.com/vladistan/tsdb-tool"
+Repository = "https://github.com/vladistan/tsdb-tool"
+Issues = "https://github.com/vladistan/tsdb-tool/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -48,7 +48,7 @@ dev = [
 ]
 
 [project.scripts]
-sql-tool = "sql_tool.cli.main:run"
+tsdb-tool = "tsdb_tool.cli.main:run"
 
 [tool.coverage.report]
 exclude_lines = [
@@ -74,7 +74,7 @@ omit = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/sql_tool"]
+packages = ["src/tsdb_tool"]
 
 [tool.mypy]
 python_version = "3.13"
@@ -106,7 +106,7 @@ pythonpath = ["src"]
 addopts = [
   "--strict-markers",
   "--strict-config",
-  "--cov=sql_tool",
+  "--cov=tsdb_tool",
   "--cov-report=term-missing",
   "--cov-report=html:htmlcov",
   "--cov-report=xml",
@@ -151,7 +151,7 @@ fixable = ["ALL"]
 unfixable = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["sql_tool"]
+known-first-party = ["tsdb_tool"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]

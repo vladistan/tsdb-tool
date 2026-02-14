@@ -4,10 +4,17 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from sql_tool.core.client import PgClient
-from sql_tool.core.config import load_config, resolve_config
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.core.postgres import (
+from tests.integration_config import (
+    TEST_DATABASE,
+    TEST_PLAIN_TABLE,
+    TEST_PROFILE,
+    TEST_SCHEMA,
+    TEST_TABLE,
+)
+from tsdb_tool.core.client import PgClient
+from tsdb_tool.core.config import load_config, resolve_config
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.core.postgres import (
     check_server,
     connections_summary,
     describe_table,
@@ -23,13 +30,6 @@ from sql_tool.core.postgres import (
     list_user_tables,
     preview_table,
     vacuum_tables,
-)
-from tests.integration_config import (
-    TEST_DATABASE,
-    TEST_PLAIN_TABLE,
-    TEST_PROFILE,
-    TEST_SCHEMA,
-    TEST_TABLE,
 )
 
 

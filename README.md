@@ -1,4 +1,4 @@
-# sql-tool
+# tsdb-tool
 
 PostgreSQL and TimescaleDB query and administration CLI tool.
 
@@ -8,11 +8,11 @@ Provides multiple output formats (table, JSON, CSV), flexible connection managem
 
 ```bash
 git clone <repository-url>
-cd sql-tool
+cd tsdb-tool
 uv sync
 ```
 
-Run commands with `uv run sql-tool` or install globally:
+Run commands with `uv run tsdb-tool` or install globally:
 
 ```bash
 uv tool install .
@@ -22,19 +22,19 @@ uv tool install .
 
 ```bash
 # Check connectivity
-sql-tool service check
+tsdb-tool service check
 
 # Run a query
-sql-tool query -e "SELECT now()"
+tsdb-tool query -e "SELECT now()"
 
 # List databases
-sql-tool databases
+tsdb-tool databases
 
 # List tables in a schema
-sql-tool -s myschema table
+tsdb-tool -s myschema table
 
 # Show table columns and preview data
-sql-tool table myschema.sensor_data --head 5
+tsdb-tool table myschema.sensor_data --head 5
 ```
 
 ## Commands
@@ -43,129 +43,129 @@ sql-tool table myschema.sensor_data --head 5
 
 ```bash
 # Inline query
-sql-tool query -e "SELECT * FROM users LIMIT 10"
+tsdb-tool query -e "SELECT * FROM users LIMIT 10"
 
 # From file
-sql-tool query queries/report.sql
+tsdb-tool query queries/report.sql
 
 # From stdin
-echo "SELECT 1" | sql-tool query
+echo "SELECT 1" | tsdb-tool query
 
 # With timeout
-sql-tool query -e "SELECT pg_sleep(5)" -t 3
+tsdb-tool query -e "SELECT pg_sleep(5)" -t 3
 ```
 
 ### Database Overview
 
 ```bash
 # List all databases (sorted by size)
-sql-tool databases
+tsdb-tool databases
 
 # List schemas with space usage
-sql-tool schema
+tsdb-tool schema
 
 # Schemas across all databases
-sql-tool schema --all-databases
+tsdb-tool schema --all-databases
 ```
 
 ### Table Inspection
 
 ```bash
 # List all tables with sizes
-sql-tool table
+tsdb-tool table
 
 # Filter by schema
-sql-tool -s myschema table
+tsdb-tool -s myschema table
 
 # Show column definitions
-sql-tool table myschema.sensor_data
+tsdb-tool table myschema.sensor_data
 
 # Preview data
-sql-tool table myschema.sensor_data --head 10
-sql-tool table myschema.sensor_data --tail 5
-sql-tool table myschema.sensor_data --sample 3
+tsdb-tool table myschema.sensor_data --head 10
+tsdb-tool table myschema.sensor_data --tail 5
+tsdb-tool table myschema.sensor_data --sample 3
 
 # Show timestamp range for hypertables
-sql-tool table myschema.sensor_data --range
+tsdb-tool table myschema.sensor_data --range
 ```
 
 ### Connections
 
 ```bash
 # Active connections (non-idle)
-sql-tool connections
+tsdb-tool connections
 
 # All connections including idle
-sql-tool connections --all
+tsdb-tool connections --all
 
 # Connection summary with memory config
-sql-tool connections --summary
+tsdb-tool connections --summary
 
 # Filter by user, database, or state
-sql-tool connections --filter-user appuser --filter-db mydb
-sql-tool connections --min-duration 5
+tsdb-tool connections --filter-user appuser --filter-db mydb
+tsdb-tool connections --min-duration 5
 ```
 
 ### Service & Maintenance
 
 ```bash
 # Check server connectivity and version
-sql-tool service check
+tsdb-tool service check
 
 # Vacuum a table
-sql-tool service vacuum my_table
-sql-tool service vacuum my_table --full
-sql-tool service vacuum --all
+tsdb-tool service vacuum my_table
+tsdb-tool service vacuum my_table --full
+tsdb-tool service vacuum --all
 
 # Kill a backend process
-sql-tool service kill 12345
-sql-tool service kill 12345 --cancel  # cancel query only
+tsdb-tool service kill 12345
+tsdb-tool service kill 12345 --cancel  # cancel query only
 ```
 
 ### TimescaleDB
 
 ```bash
 # List hypertables
-sql-tool ts hypertables
+tsdb-tool ts hypertables
 
 # Show chunks for a hypertable
-sql-tool ts chunks myschema.sensor_data
+tsdb-tool ts chunks myschema.sensor_data
 
 # Compression statistics
-sql-tool ts compression
-sql-tool ts compression myschema.sensor_data
+tsdb-tool ts compression
+tsdb-tool ts compression myschema.sensor_data
 
 # Compression settings and policies
-sql-tool ts compression-settings -s myschema
+tsdb-tool ts compression-settings -s myschema
 
 # Configure compression
-sql-tool ts compression-set myschema.sensor_data --segmentby "device_id, sensor" --orderby "timestamp DESC"
-sql-tool ts compression-set myschema.sensor_data --policy "4 hours"
+tsdb-tool ts compression-set myschema.sensor_data --segmentby "device_id, sensor" --orderby "timestamp DESC"
+tsdb-tool ts compression-set myschema.sensor_data --policy "4 hours"
 
 # Compress chunks
-sql-tool ts compress myschema.sensor_data
-sql-tool ts compress myschema.sensor_data --chunk 11420
+tsdb-tool ts compress myschema.sensor_data
+tsdb-tool ts compress myschema.sensor_data --chunk 11420
 
 # Continuous aggregates
-sql-tool ts caggs
+tsdb-tool ts caggs
 
 # Retention policies
-sql-tool ts retention
+tsdb-tool ts retention
 
 # Background jobs
-sql-tool ts jobs
-sql-tool ts jobs --history
-sql-tool ts jobs --history --job 1005
+tsdb-tool ts jobs
+tsdb-tool ts jobs --history
+tsdb-tool ts jobs --history --job 1005
 ```
 
 ### Configuration
 
 ```bash
 # Show resolved config with source attribution
-sql-tool config show
+tsdb-tool config show
 
 # List available profiles
-sql-tool config profiles
+tsdb-tool config profiles
 ```
 
 ## Output Formats
@@ -174,19 +174,19 @@ All listing commands support multiple output formats:
 
 ```bash
 # Table format (default in terminal)
-sql-tool -f table databases
+tsdb-tool -f table databases
 
 # JSON format
-sql-tool -f json databases
+tsdb-tool -f json databases
 
 # Compact JSON
-sql-tool --compact -f json databases
+tsdb-tool --compact -f json databases
 
 # CSV format (default when piped)
-sql-tool databases | head
+tsdb-tool databases | head
 
 # CSV without header
-sql-tool --no-header databases
+tsdb-tool --no-header databases
 ```
 
 Auto-detection: table format for TTY, CSV when piped.
@@ -196,9 +196,9 @@ Auto-detection: table format for TTY, CSV when piped.
 Global flags (must appear before the subcommand):
 
 ```bash
-sql-tool -H myhost -p 5432 -d mydb -U myuser query -e "SELECT 1"
-sql-tool --dsn "postgresql://user@host/db" databases
-sql-tool -P production table
+tsdb-tool -H myhost -p 5432 -d mydb -U myuser query -e "SELECT 1"
+tsdb-tool --dsn "postgresql://user@host/db" databases
+tsdb-tool -P production table
 ```
 
 | Flag | Env Var | Description |
@@ -213,7 +213,7 @@ sql-tool -P production table
 
 ## Configuration File
 
-Location: `~/.config/sql-tool/config.toml`
+Location: `~/.config/tsdb-tool/config.toml`
 
 ```toml
 default_timeout = 30
@@ -264,7 +264,7 @@ See `config.example.toml` for a full example.
 uv run pytest
 
 # Run with coverage
-uv run pytest --cov=sql_tool
+uv run pytest --cov=tsdb_tool
 
 # Lint
 uv run ruff check src/

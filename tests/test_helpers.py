@@ -1,6 +1,6 @@
 """Tests for CLI formatting helpers."""
 
-from sql_tool.cli.helpers import (
+from tsdb_tool.cli.helpers import (
     fmt_size,
     format_duration_human,
     format_relative_time,

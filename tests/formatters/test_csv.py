@@ -5,9 +5,9 @@ from io import StringIO
 
 import pytest
 
-from sql_tool.core.models import ColumnMeta, QueryResult
-from sql_tool.formatters.base import Formatter
-from sql_tool.formatters.csv import CSVFormatter
+from tsdb_tool.core.models import ColumnMeta, QueryResult
+from tsdb_tool.formatters.base import Formatter
+from tsdb_tool.formatters.csv import CSVFormatter
 
 
 def _make_result(rows=None, columns=None):

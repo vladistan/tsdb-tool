@@ -9,9 +9,9 @@ from unittest.mock import patch
 
 import pytest
 
-from sql_tool.cli.main import app
-from sql_tool.core.exceptions import InputError
 from tests.integration_config import PROFILE_ARGS, TEST_DATABASE
+from tsdb_tool.cli.main import app
+from tsdb_tool.core.exceptions import InputError
 
 FIXTURE_SQL = str(Path(__file__).parent.parent / "fixtures" / "select_42.sql")
 
@@ -102,7 +102,7 @@ def test_query_file_not_found(runner):
 @pytest.mark.unit
 def test_query_no_source(runner):
     with patch(
-        "sql_tool.cli.commands.query.resolve_query_source",
+        "tsdb_tool.cli.commands.query.resolve_query_source",
         side_effect=InputError(
             "No query provided. Use -e, file path, or pipe to stdin."
         ),
