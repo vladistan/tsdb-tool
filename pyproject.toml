@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tsdb-tool"
-version = "0.1.0"
+version = "0.1.1"
 description = "PostgreSQL query and administration CLI tool"
 readme = "README.md"
 license = {text = "MIT"}
