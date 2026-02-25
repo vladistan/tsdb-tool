@@ -5,16 +5,16 @@ Defaults use generic names; set env vars to point to your actual test database.
 
 Example:
     export SQL_TOOL_TEST_PROFILE=my_local_db
-    export SQL_TOOL_TEST_SCHEMA=magnum
-    export SQL_TOOL_TEST_TABLE=magnum_data
-    export SQL_TOOL_TEST_DATABASE=piccolo_dev
+    export SQL_TOOL_TEST_SCHEMA=myschema
+    export SQL_TOOL_TEST_TABLE=sensor_data
+    export SQL_TOOL_TEST_DATABASE=mydb
     export SQL_TOOL_TEST_PLAIN_TABLE=flyway_schema_history
 """
 
 import os
 
 # Profile name configured in ~/.config/tsdb-tool/config.toml
-TEST_PROFILE = os.environ.get("SQL_TOOL_TEST_PROFILE", "test_db")
+TEST_PROFILE = os.environ.get("SQL_TOOL_TEST_PROFILE", "my_profile")
 
 # Schema containing the hypertable used for integration tests
 TEST_SCHEMA = os.environ.get("SQL_TOOL_TEST_SCHEMA", "myschema")

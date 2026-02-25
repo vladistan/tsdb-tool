@@ -30,11 +30,3 @@ def test_version_format():
     assert len(parts) == 3
     for part in parts:
         assert part.isdigit()
-
-
-@pytest.mark.unit
-def test_version_value():
-    """Version matches expected initial value."""
-    from tsdb_tool import __version__
-
-    assert __version__ == "0.1.0"

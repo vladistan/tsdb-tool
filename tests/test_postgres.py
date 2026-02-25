@@ -177,13 +177,10 @@ def test_list_schemas_all_databases_single_database(client, resolved_config):
         )
         return PgClient(cfg)
 
-    names = list_all_database_names(client)
-    db = names[0]
-
-    raw_data, _has_chunks = list_schemas_all_databases([db], factory)
+    raw_data, _has_chunks = list_schemas_all_databases([TEST_DATABASE], factory)
 
     assert len(raw_data) >= 1
-    assert raw_data[0][0] == db
+    assert raw_data[0][0] == TEST_DATABASE
     for row in raw_data:
         assert len(row) == 7
 

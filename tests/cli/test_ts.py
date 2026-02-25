@@ -76,47 +76,29 @@ def test_ts_hypertables_table_format_shows_total_row(cli_runner):
 
 @pytest.mark.integration
 def test_ts_chunks_returns_chunk_list(cli_runner):
-    """ts chunks returns chunk info for a hypertable."""
-    ht_result = cli_runner(*PROFILE_ARGS, "--format", "json", "ts", "hypertables")
-    assert ht_result.exit_code == 0
-    hypertables = json.loads(ht_result.stdout)
-
-    if not hypertables:
-        pytest.skip("No hypertables available for chunk test")
-
-    ht = hypertables[0]
-    table_ref = f"{ht['schema']}.{ht['table']}"
-
-    result = cli_runner(*PROFILE_ARGS, "--format", "json", "ts", "chunks", table_ref)
+    """ts chunks returns chunk info for a hypertable with data."""
+    result = cli_runner(*PROFILE_ARGS, "--format", "json", "ts", "chunks", TEST_TABLE_REF)
 
     assert result.exit_code == 0
     data = json.loads(result.stdout)
     assert isinstance(data, list)
+    assert len(data) > 1, "Expected chunks + TOTAL row"
 
 
 @pytest.mark.integration
 def test_ts_chunks_output_includes_required_fields(cli_runner):
     """ts chunks output includes expected column names."""
-    ht_result = cli_runner(*PROFILE_ARGS, "--format", "json", "ts", "hypertables")
-    hypertables = json.loads(ht_result.stdout)
-
-    if not hypertables:
-        pytest.skip("No hypertables available for chunk field test")
-
-    ht = hypertables[0]
-    table_ref = f"{ht['schema']}.{ht['table']}"
-
-    result = cli_runner(*PROFILE_ARGS, "--format", "json", "ts", "chunks", table_ref)
+    result = cli_runner(*PROFILE_ARGS, "--format", "json", "ts", "chunks", TEST_TABLE_REF)
 
     assert result.exit_code == 0
     data = json.loads(result.stdout)
-    if data:
-        row = data[0]
-        assert "chunk_name" in row
-        assert "range_start" in row
-        assert "range_end" in row
-        assert "is_compressed" in row
-        assert "size" in row
+    assert len(data) >= 2, "Expected at least one chunk + TOTAL row"
+    row = data[0]
+    assert "chunk_name" in row
+    assert "range_start" in row
+    assert "range_end" in row
+    assert "is_compressed" in row
+    assert "size" in row
 
 
 def test_ts_chunks_requires_hypertable_argument(cli_runner):
@@ -124,6 +106,18 @@ def test_ts_chunks_requires_hypertable_argument(cli_runner):
     result = cli_runner("ts", "chunks")
 
     assert result.exit_code != 0
+
+
+@pytest.mark.integration
+def test_ts_chunks_table_format_shows_summary(cli_runner):
+    """ts chunks in table format shows compression summary footer."""
+    result = cli_runner(*PROFILE_ARGS, "--table", "ts", "chunks", TEST_TABLE_REF)
+
+    assert result.exit_code == 0
+    assert "Uncompressed:" in result.stderr
+    assert "Compressed:" in result.stderr
+    assert "Total:" in result.stderr
+    assert "chunks" in result.stderr
 
 
 # -- compression (6.3) --

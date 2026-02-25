@@ -6,6 +6,7 @@ import sys
 import pytest
 
 from tests.integration_config import PROFILE_ARGS
+from tsdb_tool import __version__
 from tsdb_tool.cli.commands._shared import preprocess_optional_int_flags
 from tsdb_tool.cli.main import app
 
@@ -29,12 +30,12 @@ class TestCliVersion:
     def test_version_flag(self, runner):
         result = runner.invoke(app, ["--version"])
         assert result.exit_code == 0
-        assert "tsdb-tool 0.1.0" in result.stdout
+        assert f"tsdb-tool {__version__}" in result.stdout
 
     def test_version_short_flag(self, runner):
         result = runner.invoke(app, ["-V"])
         assert result.exit_code == 0
-        assert "tsdb-tool 0.1.0" in result.stdout
+        assert f"tsdb-tool {__version__}" in result.stdout
 
 
 @pytest.mark.unit

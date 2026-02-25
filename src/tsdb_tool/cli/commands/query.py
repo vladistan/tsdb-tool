@@ -1,14 +1,14 @@
 from __future__ import annotations
 
+import sys
 from typing import Annotated
 
-import structlog
 import typer
 
 from tsdb_tool.cli.commands._shared import get_client, output_result
+from tsdb_tool.core.exceptions import InputError
+from tsdb_tool.core.exit_codes import ExitCode
 from tsdb_tool.core.query_source import resolve_query_source
-
-log = structlog.get_logger()
 
 
 def query_command(
@@ -27,7 +27,19 @@ def query_command(
     ] = None,
 ) -> None:
     """Execute a SQL query from file, inline (-e), or stdin."""
-    sql = resolve_query_source(inline=execute, file_path=file)
+    try:
+        is_tty = sys.stdin.isatty()
+    except (ValueError, AttributeError):
+        is_tty = False
+    if execute is None and file is None and is_tty:
+        typer.echo(ctx.get_help())
+        raise typer.Exit()
+
+    try:
+        sql = resolve_query_source(inline=execute, file_path=file)
+    except InputError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(ExitCode.INPUT_ERROR) from exc
 
     with get_client(ctx, timeout=timeout) as client:
         result = client.execute_query(sql)

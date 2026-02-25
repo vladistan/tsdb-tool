@@ -6,10 +6,12 @@ statement timeout, and exception mapping to SqlToolError hierarchy.
 
 from __future__ import annotations
 
+import time
 from typing import TYPE_CHECKING, Any
 
 import psycopg
 import psycopg.errors
+import sentry_sdk
 import structlog
 
 from tsdb_tool.core.exceptions import NetworkError, SqlToolError, TimeoutError
@@ -17,8 +19,6 @@ from tsdb_tool.core.models import ColumnMeta, QueryResult
 
 if TYPE_CHECKING:
     from tsdb_tool.core.config import ResolvedConfig
-
-log = structlog.get_logger()
 
 # Mapping from psycopg type OIDs to human-readable names.
 # Covers the most common PostgreSQL types; unknown OIDs fall back to "unknown".
@@ -89,42 +89,71 @@ class PgClient:
         self, sql: str, params: dict[str, Any] | None = None
     ) -> QueryResult:
         """Execute SQL and return a QueryResult."""
+        log = structlog.get_logger()
         conn = self._connect()
         timeout_ms = int(self.config.default_timeout * 1000)
 
-        try:
-            with conn.cursor() as cur:
-                cur.execute(f"SET statement_timeout = {timeout_ms}")
-                cur.execute(sql, params)
+        sql_normalized = " ".join(sql.split())
+        span_description = sql_normalized[:100]
+        log.debug("executing query", sql=sql_normalized)
+        with sentry_sdk.start_span(op="db.query", description=span_description) as span:
+            start_time = time.monotonic()
+            try:
+                with conn.cursor() as cur:
+                    cur.execute(f"SET statement_timeout = {timeout_ms}")
+                    cur.execute(sql, params)
 
-                columns: list[ColumnMeta] = []
-                rows: list[tuple[Any, ...]] = []
+                    columns: list[ColumnMeta] = []
+                    rows: list[tuple[Any, ...]] = []
 
-                if cur.description:
-                    for desc in cur.description:
-                        columns.append(
-                            ColumnMeta(
-                                name=desc.name,
-                                type_oid=desc.type_code,
-                                type_name=_TYPE_NAMES.get(desc.type_code, "unknown"),
+                    if cur.description:
+                        for desc in cur.description:
+                            columns.append(
+                                ColumnMeta(
+                                    name=desc.name,
+                                    type_oid=desc.type_code,
+                                    type_name=_TYPE_NAMES.get(
+                                        desc.type_code, "unknown"
+                                    ),
+                                )
                             )
-                        )
-                    rows = cur.fetchall()
+                        rows = cur.fetchall()
 
-                return QueryResult(
-                    columns=columns,
-                    rows=rows,
-                    row_count=len(rows),
-                    status_message=cur.statusmessage or "",
+                    duration_ms = (time.monotonic() - start_time) * 1000
+                    span.set_data("row_count", len(rows))
+                    span.set_data("duration_ms", duration_ms)
+                    log.debug(
+                        "query complete",
+                        duration_ms=f"{duration_ms:.1f}",
+                        row_count=len(rows),
+                    )
+
+                    return QueryResult(
+                        columns=columns,
+                        rows=rows,
+                        row_count=len(rows),
+                        status_message=cur.statusmessage or "",
+                    )
+
+            except psycopg.errors.QueryCanceled as e:
+                duration_ms = (time.monotonic() - start_time) * 1000
+                span.set_data("duration_ms", duration_ms)
+                span.set_status("deadline_exceeded")
+                log.error(
+                    "query timeout",
+                    sql=sql_normalized,
+                    duration_ms=f"{duration_ms:.1f}",
                 )
-
-        except psycopg.errors.QueryCanceled as e:
-            msg = f"Query timed out after {self.config.default_timeout}s: {e}"
-            raise TimeoutError(msg) from e
-        except psycopg.errors.SyntaxError as e:
-            raise SqlToolError(f"SQL error: {e}") from e
-        except psycopg.OperationalError as e:
-            raise NetworkError(f"Database error: {e}") from e
+                msg = f"Query timed out after {self.config.default_timeout}s: {e}"
+                raise TimeoutError(msg) from e
+            except psycopg.errors.SyntaxError as e:
+                span.set_status("invalid_argument")
+                log.error("query syntax error", sql=sql_normalized, error=str(e))
+                raise SqlToolError(f"SQL error: {e}") from e
+            except psycopg.OperationalError as e:
+                span.set_status("unavailable")
+                log.error("database error", sql=sql_normalized, error=str(e))
+                raise NetworkError(f"Database error: {e}") from e
 
     def close(self) -> None:
         """Close the database connection."""

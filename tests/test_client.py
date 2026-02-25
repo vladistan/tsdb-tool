@@ -1,6 +1,6 @@
 """Tests for PgClient (Phase 3, Step 3.2).
 
-Integration tests against real PostgreSQL using test_db profile.
+Integration tests against real PostgreSQL using my_profile profile.
 """
 
 import pytest

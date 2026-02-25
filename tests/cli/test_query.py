@@ -1,6 +1,6 @@
 """Tests for query command (Phase 3, Step 3.4).
 
-Integration tests against real PostgreSQL using test_db profile.
+Integration tests against real PostgreSQL using my_profile profile.
 """
 
 import json
@@ -92,8 +92,7 @@ def test_query_from_file(runner):
 @pytest.mark.unit
 def test_query_file_not_found(runner):
     result = runner.invoke(app, [*PROFILE_ARGS, "query", "/nonexistent/file.sql"])
-    assert result.exit_code != 0
-    assert isinstance(result.exception, InputError)
+    assert result.exit_code == 3
 
 
 # -- No source --
@@ -109,8 +108,7 @@ def test_query_no_source(runner):
     ):
         result = runner.invoke(app, [*PROFILE_ARGS, "query"])
 
-    assert result.exit_code != 0
-    assert isinstance(result.exception, InputError)
+    assert result.exit_code == 3
 
 
 # -- Error handling --
