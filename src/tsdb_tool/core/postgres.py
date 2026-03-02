@@ -15,6 +15,11 @@ if TYPE_CHECKING:
 
     from tsdb_tool.core.client import PgClient
 
+
+def _q(ident: str) -> str:
+    """Quote a PostgreSQL identifier, escaping embedded double-quotes."""
+    return '"' + ident.replace('"', '""') + '"'
+
 # ---------------------------------------------------------------------------
 # Service operations (used by cli/commands/service.py)
 # ---------------------------------------------------------------------------
@@ -351,9 +356,9 @@ def get_timestamp_range(
     """Get min/max timestamps for a table's time column."""
     sql = f"""
     SELECT
-        MIN({time_column})::text AS min_timestamp,
-        MAX({time_column})::text AS max_timestamp
-    FROM {schema_name}.{table_name}
+        MIN({_q(time_column)})::text AS min_timestamp,
+        MAX({_q(time_column)})::text AS max_timestamp
+    FROM {_q(schema_name)}.{_q(table_name)}
     """
     return client.execute_query(sql)
 
@@ -376,30 +381,37 @@ def preview_table(
     if sample is not None:
         if time_column:
             sql = f"""
-            SELECT * FROM {schema_name}.{table_name}
-            WHERE {time_column} >= (
-                SELECT MAX({time_column}) - interval '7 days'
-                FROM {schema_name}.{table_name}
+            SELECT * FROM {_q(schema_name)}.{_q(table_name)}
+            WHERE {_q(time_column)} >= (
+                SELECT MAX({_q(time_column)}) - interval '7 days'
+                FROM {_q(schema_name)}.{_q(table_name)}
             )
             ORDER BY random()
             LIMIT %(limit)s
             """
         else:
             sql = f"""
-            SELECT * FROM {schema_name}.{table_name}
+            SELECT * FROM {_q(schema_name)}.{_q(table_name)}
             TABLESAMPLE BERNOULLI(1)
+            LIMIT %(limit)s
+            """
+            result = client.execute_query(sql, {"limit": limit})
+            if result.rows:
+                return result
+            sql = f"""
+            SELECT * FROM {_q(schema_name)}.{_q(table_name)}
             LIMIT %(limit)s
             """
     else:
         if head is not None and time_column:
-            order_clause = f"ORDER BY {time_column} ASC"
+            order_clause = f"ORDER BY {_q(time_column)} ASC"
         elif tail is not None and time_column:
-            order_clause = f"ORDER BY {time_column} DESC"
+            order_clause = f"ORDER BY {_q(time_column)} DESC"
         else:
             order_clause = ""
 
         sql = f"""
-        SELECT * FROM {schema_name}.{table_name}
+        SELECT * FROM {_q(schema_name)}.{_q(table_name)}
         {order_clause}
         LIMIT %(limit)s
         """

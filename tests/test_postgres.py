@@ -322,7 +322,92 @@ def test_get_timestamp_range_returns_range(client):
 
 
 # ---------------------------------------------------------------------------
-# preview_table
+# preview_table — identifier quoting (unit)
+# ---------------------------------------------------------------------------
+
+
+def test_preview_table_head_quotes_mixed_case_table_name():
+    mock_client = MagicMock()
+    mock_client.execute_query.return_value = _make_result([(1,)])
+
+    preview_table(mock_client, "public", "MixedCase_Table", head=4)
+
+    sql = mock_client.execute_query.call_args[0][0]
+    assert '"public"."MixedCase_Table"' in sql
+
+
+def test_preview_table_tail_quotes_mixed_case_table_name():
+    mock_client = MagicMock()
+    mock_client.execute_query.return_value = _make_result([(1,)])
+
+    preview_table(mock_client, "public", "MixedCase_Table", tail=4)
+
+    sql = mock_client.execute_query.call_args[0][0]
+    assert '"public"."MixedCase_Table"' in sql
+
+
+def test_preview_table_sample_quotes_mixed_case_table_name():
+    mock_client = MagicMock()
+    mock_client.execute_query.return_value = _make_result([(1,)])
+
+    preview_table(mock_client, "public", "MixedCase_Table", sample=4)
+
+    sql = mock_client.execute_query.call_args[0][0]
+    assert '"public"."MixedCase_Table"' in sql
+
+
+def test_preview_table_head_quotes_time_column():
+    mock_client = MagicMock()
+    mock_client.execute_query.return_value = _make_result([(1,)])
+
+    preview_table(mock_client, "public", "MixedCase_Table", head=4, time_column="createdAt")
+
+    sql = mock_client.execute_query.call_args[0][0]
+    assert '"public"."MixedCase_Table"' in sql
+    assert '"createdAt"' in sql
+
+
+def test_get_timestamp_range_quotes_identifiers():
+    mock_client = MagicMock()
+    mock_client.execute_query.return_value = _make_result([("2024-01-01", "2024-12-31")])
+
+    get_timestamp_range(mock_client, "public", "MixedCase_Table", "createdAt")
+
+    sql = mock_client.execute_query.call_args[0][0]
+    assert '"public"."MixedCase_Table"' in sql
+    assert '"createdAt"' in sql
+
+
+def test_preview_table_sample_bernoulli_fallback_on_empty():
+    mock_client = MagicMock()
+    empty = _make_result([])
+    fallback = _make_result([(1,), (2,), (3,)])
+    mock_client.execute_query.side_effect = [empty, fallback]
+
+    result = preview_table(mock_client, "public", "small_table", sample=5)
+
+    assert result is not None
+    assert result.rows == [(1,), (2,), (3,)]
+    assert mock_client.execute_query.call_count == 2
+    first_sql = mock_client.execute_query.call_args_list[0][0][0]
+    second_sql = mock_client.execute_query.call_args_list[1][0][0]
+    assert "BERNOULLI" in first_sql
+    assert "BERNOULLI" not in second_sql
+
+
+def test_preview_table_sample_bernoulli_no_fallback_when_rows_found():
+    mock_client = MagicMock()
+    mock_client.execute_query.return_value = _make_result([(1,), (2,)])
+
+    result = preview_table(mock_client, "public", "big_table", sample=5)
+
+    assert result is not None
+    assert len(result.rows) == 2
+    assert mock_client.execute_query.call_count == 1
+
+
+# ---------------------------------------------------------------------------
+# preview_table — integration
 # ---------------------------------------------------------------------------
 
 
